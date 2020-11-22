@@ -1,0 +1,37 @@
+{
+  "name": "node-osm-api",
+  "version": "1.0.0",
+  "description": "easy communication with osm api",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MapColonies/node-osm-api.git"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "author": "galta95",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MapColonies/node-osm-api/issues"
+  },
+  "homepage": "https://github.com/MapColonies/node-osm-api#readme",
+  "dependencies": {
+    "axios": "^0.21.0"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "chai": "^4.2.0",
+    "commitlint": "^11.0.0",
+    "eslint": "^7.14.0",
+    "husky": "^4.3.0",
+    "mocha": "^8.2.1"
+  }
+}
