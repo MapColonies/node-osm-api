@@ -1,0 +1,31 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  eslint:
+    name: Run JS Project eslint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out JS Project Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install JS Project dependencies
+        working-directory: ./projectTemplates/js-server
+        run: npm install
+
+      - name: Run JS Project linters
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Enable linters
+          eslint: true
+          eslint_dir: ./projectTemplates/js-server/
+          eslint_extensions: js
