@@ -4,7 +4,7 @@
   "description": "easy communication with osm api",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha -r ts-node/register 'src/tests/unit/unit.test.ts'",
     "tsc": "tsc"
   },
   "repository": {
@@ -31,12 +31,16 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^11.0.0",
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.0.4",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "chai": "^4.2.0",
     "commitlint": "^11.0.0",
     "eslint": "^7.14.0",
     "husky": "^4.3.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "nock": "^13.0.5",
+    "ts-node": "^9.0.0"
   }
 }

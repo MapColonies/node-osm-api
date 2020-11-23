@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios'; 
 import { response } from '../../lib/response-handler';
-import { createChangeset } from '../../lib/endpoints';
+import { createChangesetEndPoint } from '../../lib/endpoints';
 import { createChangesetXml } from '../../lib/osmXml';
 
 class Apiv6 {
@@ -52,10 +52,10 @@ class Apiv6 {
         return true;
     }
    
-    public async createChangeSet(generator: string, createdBy: string): Promise<{ code: number, message: string }> {        
+    public async createChangeset(generator: string, createdBy: string): Promise<{ code: number, message: string }> {        
         const data = createChangesetXml(generator, createdBy, this.host);
         const conf: AxiosRequestConfig = {
-            url: this.url + createChangeset,
+            url: this.url + createChangesetEndPoint,
             method: 'put',
             data: data,
             auth: { username: this.username, password: this.password }

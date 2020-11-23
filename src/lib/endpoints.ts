@@ -1,1 +1,1 @@
-export const createChangeset = '/api/0.6/changeset/create';
+export const createChangesetEndPoint = '/api/0.6/changeset/create';
