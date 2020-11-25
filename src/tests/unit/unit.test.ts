@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 
 import Apiv6 from '../../../index';
-import { testConf } from './config/tests.config';
+import { testConf } from './config/tests-config';
 import { createChangesetNock, createChangesetNockNotAuth } from './helper/nock-apiv6';
 
 const { host, port, username, password } = testConf;

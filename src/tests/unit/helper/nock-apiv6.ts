@@ -1,5 +1,5 @@
 import nock = require('nock');
-import { testConf } from '../config/tests.config';
+import { testConf } from '../config/tests-config';
 import { createChangesetEndPoint } from '../../../lib/endpoints';
 
 const { host, port } = testConf;

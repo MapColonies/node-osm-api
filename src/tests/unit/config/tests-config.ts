@@ -3,4 +3,4 @@ export const testConf = {
     port: 8080,
     username: 'USERNAME',
     password: 'PASSWORD'
-}
+};

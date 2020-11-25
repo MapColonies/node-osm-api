@@ -2,5 +2,5 @@ export function response(code: number, message: string): {code: number, message:
     return {
         code: code,
         message: message
-    }
+    };
 }
