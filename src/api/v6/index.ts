@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios'; 
 import { response } from '../../lib/response-handler';
-import { createChangesetEndPoint } from '../../lib/endpoints';
+import { createChangesetEndPoint,
+         closeChangesetEndPoint } from '../../lib/constants/endpoints';
 import { createChangesetXml } from '../../lib/osmXml';
 
 class Apiv6 {
@@ -14,7 +15,7 @@ class Apiv6 {
     constructor(host: string, port: number, username: string, password: string) {
         this.host = host;
         this.port = port;
-        this.url = `${host}:${port}`
+        this.url = `${host}:${port}`;
         this.username = username;
         this.password = password;
     }
@@ -64,8 +65,23 @@ class Apiv6 {
             const res = await axios(conf);
             const { data: changeSetId, status: code }  = res;
             return response(code, changeSetId);
+        } catch (e) {
+            const { response: { status: code, data: message }  } = e;
+            return response(code, message);
         }
-        catch (e) {
+    }
+
+    public async closeChangeset(id: number): Promise<{ code: number, message: string }> {
+        const conf: AxiosRequestConfig = {
+            url: this.url + closeChangesetEndPoint(id),
+            method: 'put',
+            auth: { username: this.username, password: this.password }
+        };
+        try {
+            const res = await axios(conf);
+            const { status: code }  = res;
+            return response(code, `changeset ${id} has closed`);
+        } catch (e) {
             const { response: { status: code, data: message }  } = e;
             return response(code, message);
         }
