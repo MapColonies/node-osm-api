@@ -82,10 +82,12 @@ class Apiv6 {
             const { status: code }  = res;
             return response(code, `changeset ${id} has closed`);
         } catch (e) {
-            const { response: { status: code, data: message }  } = e;
+            const { response: { status: code } } = e;
+            let { response: { data: message } } = e;
+            if ( code === 404 ) { message = `changeset ${id} was not found`; }
             return response(code, message);
         }
     }
 }
-
+send
 export default Apiv6;
