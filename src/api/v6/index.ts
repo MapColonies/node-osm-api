@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios'; 
 import { response } from '../../lib/response-handler';
-import { createChangesetEndPoint } from '../../lib/endpoints';
+import { createChangesetEndPoint, uploadChangesetEndPoint } from '../../lib/endpoints';
 import { createChangesetXml } from '../../lib/osmXml';
 
 class Apiv6 {
@@ -14,7 +14,7 @@ class Apiv6 {
     constructor(host: string, port: number, username: string, password: string) {
         this.host = host;
         this.port = port;
-        this.url = `${host}:${port}`
+        this.url = `${host}:${port}`;
         this.username = username;
         this.password = password;
     }
@@ -58,6 +58,24 @@ class Apiv6 {
             url: this.url + createChangesetEndPoint,
             method: 'put',
             data: data,
+            auth: { username: this.username, password: this.password }
+        };
+        try {
+            const res = await axios(conf);
+            const { data: changeSetId, status: code }  = res;
+            return response(code, changeSetId);
+        }
+        catch (e) {
+            const { response: { status: code, data: message }  } = e;
+            return response(code, message);
+        }
+    }
+
+    public async uploadChangeset(id: number, osc: string): Promise<{ code: number, message: string }> {        
+        const conf: AxiosRequestConfig = {
+            url: this.url + uploadChangesetEndPoint(id),
+            method: 'post',
+            data: osc,
             auth: { username: this.username, password: this.password }
         };
         try {
