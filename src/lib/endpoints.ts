@@ -1,0 +1,1 @@
+export const createChangesetEndPoint = '/api/0.6/changeset/create';
