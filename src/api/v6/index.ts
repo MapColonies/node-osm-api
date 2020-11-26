@@ -89,5 +89,5 @@ class Apiv6 {
         }
     }
 }
-send
+
 export default Apiv6;
