@@ -1,6 +1,5 @@
 export const testConf = {
-    host: 'http://test.com',
-    port: 8080,
+    url: 'http://test.com:8080',
     username: 'USERNAME',
     password: 'PASSWORD'
 };

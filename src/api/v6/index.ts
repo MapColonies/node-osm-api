@@ -2,29 +2,19 @@ import axios from 'axios';
 import { AxiosRequestConfig } from 'axios'; 
 import { response } from '../../lib/response-handler';
 import { createChangesetEndPoint } from '../../lib/endpoints';
-import { createChangesetXml } from '../../lib/osmXml';
-
+import { createChangesetXml } from '../../lib/osm-xml';
+import  HttpErrorHandler from '../../lib/http-error-handler';
 class Apiv6 {
-    host: string;
-    port: number;
     url: string;
     username: string;
     password: string;
     
-    constructor(host: string, port: number, username: string, password: string) {
-        this.host = host;
-        this.port = port;
-        this.url = `${host}:${port}`;
+    constructor(url: string, username: string, password: string) {
+        this.url = url;
         this.username = username;
         this.password = password;
     }
 
-    getHost(): string {
-        return this.host;
-    }
-    getPort(): number {
-        return this.port;
-    }
     getUrl(): string {
         return this.url;
     }
@@ -35,25 +25,16 @@ class Apiv6 {
         return this.password;
     }
 
-    setHost(host: string): boolean {
-        this.host = host;
-        return true;
+    setUrl(url: string): void {
+        this.url = url;
     }
-    setPort(port: number): boolean {
-        this.port = port;
-        return true;
-    }
-    setUserName(username: string): boolean {
-         this.username = username;
-         return true;
-    }
-    setPassword(password: string): boolean {
+    setCreds(username: string, password: string): void {
+        this.username = username;
         this.password = password;
-        return true;
     }
    
     public async createChangeset(generator: string, createdBy: string): Promise<{ code: number, message: string }> {        
-        const data = createChangesetXml(generator, createdBy, this.host);
+        const data = createChangesetXml(generator, createdBy, this.url);
         const conf: AxiosRequestConfig = {
             url: this.url + createChangesetEndPoint,
             method: 'put',
@@ -66,8 +47,7 @@ class Apiv6 {
             return response(code, changeSetId);
         }
         catch (e) {
-            const { response: { status: code, data: message }  } = e;
-            return response(code, message);
+            throw new HttpErrorHandler(e);
         }
     }
 }
