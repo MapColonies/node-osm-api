@@ -14,7 +14,7 @@ class Apiv6 {
     constructor(host: string, port: number, username: string, password: string) {
         this.host = host;
         this.port = port;
-        this.url = `${host}:${port}`
+        this.url = `${host}:${port}`;
         this.username = username;
         this.password = password;
     }
