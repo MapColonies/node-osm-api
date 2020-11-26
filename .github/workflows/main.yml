@@ -1,12 +1,11 @@
-name: Lint
+name: ci
 
 on: [pull_request]
 
 jobs:
-  eslint:
-    name: Run eslint
+  build:
+    name: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
@@ -20,11 +19,25 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install
 
-      - name: Run linters
-        uses: samuelmeuli/lint-action@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          # Enable linters
-          eslint: true
-          eslint_extensions: ts
-          # prettier: true
+  eslint:
+    name: Run eslint
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run linters
+      uses: samuelmeuli/lint-action@v1
+      with:
+        github_token: ${{ secrets.github_token }}
+        # Enable linters
+        eslint: true
+        eslint_extensions: ts
+        # prettier: true
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run unit tests
+      uses: actions/checkout@v2
+      run: npm run unit-tests
+      with:
+        github_token: ${{ secrets.github_token }}
