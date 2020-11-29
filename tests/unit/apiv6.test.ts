@@ -20,11 +20,7 @@ describe('apiv6', function () {
                     const xmlData = createChangesetXml("test-generator", "test-user");
                     const res = await apiv6.createChangeset(xmlData);
 
-                    expect(res).to.be.a('object')
-                                        .with.property('status')
-                                        .and.to.be.equal(200);
-                    expect(res).to.have.property('data')
-                            .and.to.be.equal(12);
+                    expect(res).to.be.equal(12);
                 });
             });
             describe('with unregisterd user', function () {
@@ -38,11 +34,10 @@ describe('apiv6', function () {
                     try {
                         await apiv6.createChangeset(xmlData);
                     } catch (e) {
+                        console.log(e);
                         expect(e).to.be.a('Error')
                                 .with.property('message')
                                 .and.to.be.equal('Couldn\'t authenticate you');
-                        expect(e).to.have.property('status')
-                                 .and.to.be.equal(401);
                     }
                 });
             });
