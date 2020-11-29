@@ -27,7 +27,7 @@ describe('apiv6', function () {
                 it('should return error', async function () {
                     const apiv6 = new Apiv6(baseUrl, 'not-registerd', '123456');
 
-                    nock(baseUrl).put(createChangesetEndPoint).reply(401, "Couldn't authenticate you");
+                    nock(baseUrl).put(createChangesetEndPoint).reply(401, 'Couldn\'t authenticate you');
                     
                     const xmlData = createChangesetXml("test-generator", "test-user");
 

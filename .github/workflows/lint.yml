@@ -1,6 +1,6 @@
 name: Lint
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   eslint:
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install Node.js dependencies
+      - name: Install TS Project dependencies
         run: npm install
 
       - name: Run TS Project linters
@@ -25,5 +25,4 @@ jobs:
           github_token: ${{ secrets.github_token }}
           # Enable linters
           eslint: true
-          eslint_dir: ./src
           eslint_extensions: ts

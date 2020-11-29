@@ -1,10 +1,10 @@
 name: Tests
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   tests:
-    name: Run TS Project eslint
+    name: Run TS Project Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +17,7 @@ jobs:
           node-version: 12
 
       - name: Install Node.js dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run unit tests
-        uses: actions/checkout@v2
-        run: npm run unit-tests
-        with:
-          github_token: ${{ secrets.github_token }}
+      - name: Run tests
+        run: npm run test
