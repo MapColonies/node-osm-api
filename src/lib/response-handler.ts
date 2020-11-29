@@ -1,6 +1,4 @@
-export function response(code: number, message: string): {code: number, message: string} {
-    return {
-        code: code,
-        message: message
-    };
+export interface IResponse<T = string> {
+    status: number, 
+    data: T
 }

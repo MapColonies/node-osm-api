@@ -3,9 +3,9 @@ export interface MyError extends Error {
 }
 
 class HttpErrorHandler extends Error {
-    status: number
+    private readonly status: number
 
-    constructor(error: MyError) {
+    public constructor(error: MyError) {
         super(error.response.data);
         this.status = error.response.status;
         Object.setPrototypeOf(this, HttpErrorHandler.prototype);

@@ -2,34 +2,41 @@ import { expect } from 'chai';
 import nock = require('nock');
 
 import Apiv6 from '../../src/index';
-import { testConf } from './config/tests-config';
 import { createChangesetEndPoint } from '../../src/lib/endpoints';
+import { testConf } from './config/tests-config';
+import { createChangesetXml } from './lib/osm-xml';
 
-const { url, username, password } = testConf;
+const { baseUrl, username, password } = testConf;
 
-describe('apiv6', async function () {
-    const apiv6 = new Apiv6(url, username, password);
-    describe('happy flow', async function () {
-        describe('/changeset/create', async function () {
-            describe('with register user', async function () {
+describe('apiv6', function () {
+    describe('happy flow', function () {
+        describe('/changeset/create', function () {
+            describe('with register user', function () {
                 it('should return 200 and changset number', async function () {
-                    nock(url).put(createChangesetEndPoint).reply(200, '12');
-                    const res = await apiv6.createChangeset("test-generator", "test-user");
+                    const apiv6 = new Apiv6(baseUrl, username, password);
+                    
+                    nock(baseUrl).put(createChangesetEndPoint).reply(200, '12');
+                    
+                    const xmlData = createChangesetXml("test-generator", "test-user");
+                    const res = await apiv6.createChangeset(xmlData);
 
                     expect(res).to.be.a('object')
-                                        .with.property('code')
+                                        .with.property('status')
                                         .and.to.be.equal(200);
-                    expect(res).to.have.property('message')
+                    expect(res).to.have.property('data')
                             .and.to.be.equal(12);
                 });
             });
-            describe('with unregisterd user', async function () {
+            describe('with unregisterd user', function () {
                 it('should return error', async function () {
-                    nock(url).put(createChangesetEndPoint).reply(401, "Couldn't authenticate you");
-                    apiv6.setCreds('not-registerd', '123456');
+                    const apiv6 = new Apiv6(baseUrl, 'not-registerd', '123456');
+
+                    nock(baseUrl).put(createChangesetEndPoint).reply(401, "Couldn't authenticate you");
+                    
+                    const xmlData = createChangesetXml("test-generator", "test-user");
 
                     try {
-                        await apiv6.createChangeset("test-generator", "test-user");
+                        await apiv6.createChangeset(xmlData);
                     } catch (e) {
                         expect(e).to.be.a('Error')
                                 .with.property('message')
