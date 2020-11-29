@@ -41,14 +41,15 @@ class Apiv6 {
             data: data,
             auth: { username: this.username, password: this.password }
         };
+        let res;
         try {
-            const res = await axios(conf);
-            const { data: changeSetId, status: code }  = res;
-            return response(code, changeSetId);
+            res = await axios(conf);
         }
         catch (e) {
             throw new HttpErrorHandler(e);
         }
+        const { data: changeSetId, status: code }  = res;
+        return response(code, changeSetId);
     }
 }
 
