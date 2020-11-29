@@ -1,0 +1,29 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  eslint:
+    name: Run TS Project eslint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out TS Project Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Run TS Project linters
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Enable linters
+          eslint: true
+          eslint_dir: ./src
+          eslint_extensions: ts
