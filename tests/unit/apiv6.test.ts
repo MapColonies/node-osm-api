@@ -2,17 +2,8 @@ import { expect } from 'chai';
 import nock = require('nock');
 
 import Apiv6 from '../../src/index';
-import {
-  createChangesetEndPoint,
-  closeChangesetEndPoint,
-} from '../../src/lib/endpoints';
-import {
-  UnauthorizedError,
-  BadXmlError,
-  ChangesetNotFoundError,
-  ChangesetAlreadyClosedError,
-  OwnerMismatchError,
-} from '../../src/lib/error-handler';
+import { createChangesetEndPoint, closeChangesetEndPoint } from '../../src/lib/endpoints';
+import { UnauthorizedError, BadXmlError, ChangesetNotFoundError, ChangesetAlreadyClosedError, OwnerMismatchError } from '../../src/lib/error';
 import { testConf } from './config/tests-config';
 const { baseUrl, username, password, changeSetNumber } = testConf;
 
@@ -41,9 +32,7 @@ describe('apiv6', function () {
         it('should return UnauthorizedError', async function () {
           const apiv6 = new Apiv6(baseUrl, 'not-registerd', '123456');
 
-          nock(baseUrl)
-            .put(createChangesetEndPoint)
-            .reply(401, "Couldn't authenticate you");
+          nock(baseUrl).put(createChangesetEndPoint).reply(401, "Couldn't authenticate you");
 
           const xmlData = `<osm>
                                         <changeset version='0.6' generator='test-generator'>
@@ -53,10 +42,7 @@ describe('apiv6', function () {
           try {
             await apiv6.createChangeset(xmlData);
           } catch (e) {
-            return expect(e)
-              .to.be.instanceOf(UnauthorizedError)
-              .with.property('message')
-              .and.to.be.equal("Couldn't authenticate you");
+            return expect(e).to.be.instanceOf(UnauthorizedError).with.property('message').and.to.be.equal("Couldn't authenticate you");
           }
           throw new Error('should have thrown an error');
         });
@@ -65,9 +51,7 @@ describe('apiv6', function () {
         it('should return BadXmlError', async function () {
           const apiv6 = new Apiv6(baseUrl, 'not-registerd', '123456');
 
-          nock(baseUrl)
-            .put(createChangesetEndPoint)
-            .reply(400, 'Cannot parse valid changeset from xml string');
+          nock(baseUrl).put(createChangesetEndPoint).reply(400, 'Cannot parse valid changeset from xml string');
 
           const xmlData = `<BAD>
                                         <changeset version='0.6' generator='sync'>
@@ -79,10 +63,7 @@ describe('apiv6', function () {
           try {
             await apiv6.createChangeset(xmlData);
           } catch (e) {
-            return expect(e)
-              .to.be.instanceOf(BadXmlError)
-              .with.property('message')
-              .and.to.be.equal('Cannot parse valid changeset from xml string');
+            return expect(e).to.be.instanceOf(BadXmlError).with.property('message').and.to.be.equal('Cannot parse valid changeset from xml string');
           }
           throw new Error('should have thrown an error');
         });
@@ -106,17 +87,12 @@ describe('apiv6', function () {
         it('should return OwnerMismatchError', async function () {
           const apiv6 = new Apiv6(baseUrl, username, password);
 
-          nock(baseUrl)
-            .put(closeChangesetEndPoint(changeSetNumber))
-            .reply(409, "The user doesn't own that changeset");
+          nock(baseUrl).put(closeChangesetEndPoint(changeSetNumber)).reply(409, "The user doesn't own that changeset");
 
           try {
             await apiv6.closeChangeset(changeSetNumber);
           } catch (e) {
-            return expect(e)
-              .to.be.instanceof(OwnerMismatchError)
-              .with.property('message')
-              .and.to.be.equal("The user doesn't own that changeset");
+            return expect(e).to.be.instanceof(OwnerMismatchError).with.property('message').and.to.be.equal("The user doesn't own that changeset");
           }
           throw new Error('should have thrown an error');
         });
@@ -125,9 +101,7 @@ describe('apiv6', function () {
         it('should return ChangesetAlreadyClosedError', async function () {
           const apiv6 = new Apiv6(baseUrl, username, password);
 
-          nock(baseUrl)
-            .put(closeChangesetEndPoint(changeSetNumber))
-            .reply(409, `changeset ${changeSetNumber} was closed at`);
+          nock(baseUrl).put(closeChangesetEndPoint(changeSetNumber)).reply(409, `changeset ${changeSetNumber} was closed at`);
 
           try {
             await apiv6.closeChangeset(changeSetNumber);
