@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import StatusCodes from 'http-status-codes';
-import { createChangesetEndPoint, closeChangesetEndPoint } from '../../lib/endpoints';
+import { createChangesetEndPoint, closeChangesetEndPoint, uploadChangesetEndPoint } from '../../lib/endpoints';
 import {
   UnauthorizedError,
   BadXmlError,
@@ -8,8 +8,10 @@ import {
   OwnerMismatchError,
   NotAllowedError,
   ChangesetAlreadyClosedError,
+  MismatchChangesetError,
+  ChangesetOrDiffElementsNotFoundError,
 } from '../../lib/errors';
-import { OWNER_MISMATCH } from '../../lib/constants';
+import { OWNER_MISMATCH, CHANGESET_MISMATCH, CHANGESET_ALREADY_CLOSED } from '../../lib/constants';
 class Apiv6 {
   private readonly httpClient: AxiosInstance;
 
@@ -60,6 +62,37 @@ class Apiv6 {
         throw new Error(e);
       }
     }
+  }
+
+  public async uploadChangeset(id: number, data: string): Promise<string> {
+    let res: AxiosResponse<string>;
+    try {
+      res = await this.httpClient.post<string>(uploadChangesetEndPoint(id), data);
+    } catch (e) {
+      const axiosError = e as AxiosError;
+
+      if (axiosError.response?.status === StatusCodes.BAD_REQUEST) {
+        throw new BadXmlError(axiosError);
+      } else if (axiosError.response?.status === StatusCodes.NOT_FOUND) {
+        throw new ChangesetOrDiffElementsNotFoundError(axiosError);
+      } else if (axiosError.response?.status === StatusCodes.CONFLICT) {
+        if (axiosError.response?.data.includes(CHANGESET_ALREADY_CLOSED) === true) {
+          throw new ChangesetAlreadyClosedError(axiosError);
+        } else if (axiosError.response?.data.includes(OWNER_MISMATCH) === true) {
+          throw new OwnerMismatchError(axiosError);
+        } else if (axiosError.response?.data.includes(CHANGESET_MISMATCH) === true) {
+          throw new MismatchChangesetError(axiosError);
+        } else {
+          throw new Error(e);
+        }
+      } else if (axiosError.response?.status === StatusCodes.UNAUTHORIZED) {
+        throw new UnauthorizedError(axiosError);
+      } else {
+        throw new Error(e);
+      }
+    }
+    const { data: diffResult } = res;
+    return diffResult;
   }
 }
 
