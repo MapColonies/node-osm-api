@@ -9,7 +9,7 @@ import {
   NotAllowedError,
   ChangesetAlreadyClosedError,
 } from '../../lib/errors';
-import { ownerMismatch } from '../../lib/constants';
+import { OWNER_MISMATCH } from '../../lib/constants';
 class Apiv6 {
   private readonly httpClient: AxiosInstance;
 
@@ -52,7 +52,7 @@ class Apiv6 {
       } else if (axiosError.response?.status === StatusCodes.NOT_FOUND) {
         throw new ChangesetNotFoundError(axiosError);
       } else if (axiosError.response?.status === StatusCodes.CONFLICT) {
-        if (axiosError.response.data === ownerMismatch) {
+        if (axiosError.response.data === OWNER_MISMATCH) {
           throw new OwnerMismatchError(axiosError);
         }
         throw new ChangesetAlreadyClosedError(axiosError);

@@ -1,1 +1,1 @@
-export const ownerMismatch = "The user doesn't own that changeset";
+export const OWNER_MISMATCH = "The user doesn't own that changeset";
