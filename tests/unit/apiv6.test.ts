@@ -3,7 +3,7 @@ import nock = require('nock');
 
 import Apiv6 from '../../src/index';
 import { createChangesetEndPoint, closeChangesetEndPoint } from '../../src/lib/endpoints';
-import { UnauthorizedError, BadXmlError, ChangesetNotFoundError, ChangesetAlreadyClosedError, OwnerMismatchError } from '../../src/lib/error';
+import { UnauthorizedError, BadXmlError, ChangesetNotFoundError, ChangesetAlreadyClosedError, OwnerMismatchError } from '../../src/lib/errors';
 import { testConf } from './config/tests-config';
 const { baseUrl, username, password, changeSetNumber } = testConf;
 

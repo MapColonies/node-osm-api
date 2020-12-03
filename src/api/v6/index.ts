@@ -8,7 +8,7 @@ import {
   OwnerMismatchError,
   NotAllowedError,
   ChangesetAlreadyClosedError,
-} from '../../lib/error';
+} from '../../lib/errors';
 import { ownerMismatch } from '../../lib/constants';
 class Apiv6 {
   private readonly httpClient: AxiosInstance;
