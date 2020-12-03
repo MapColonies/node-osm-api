@@ -1,9 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import StatusCodes from 'http-status-codes';
-import {
-  createChangesetEndPoint,
-  closeChangesetEndPoint,
-} from '../../lib/endpoints';
+import { createChangesetEndPoint, closeChangesetEndPoint } from '../../lib/endpoints';
 import {
   UnauthorizedError,
   BadXmlError,
@@ -11,15 +8,12 @@ import {
   OwnerMismatchError,
   NotAllowedError,
   ChangesetAlreadyClosedError,
-} from '../../lib/error-handler';
+} from '../../lib/error';
+import { ownerMismatch } from '../../lib/constants';
 class Apiv6 {
   private readonly httpClient: AxiosInstance;
 
-  public constructor(
-    private readonly baseUrl: string,
-    username: string,
-    password: string
-  ) {
+  public constructor(private readonly baseUrl: string, username: string, password: string) {
     this.httpClient = axios.create({
       baseURL: baseUrl,
       auth: { username, password },
@@ -53,16 +47,12 @@ class Apiv6 {
 
       if (axiosError.response?.status === StatusCodes.UNAUTHORIZED) {
         throw new UnauthorizedError(axiosError);
-      } else if (
-        axiosError.response?.status === StatusCodes.METHOD_NOT_ALLOWED
-      ) {
+      } else if (axiosError.response?.status === StatusCodes.METHOD_NOT_ALLOWED) {
         throw new NotAllowedError(axiosError);
       } else if (axiosError.response?.status === StatusCodes.NOT_FOUND) {
         throw new ChangesetNotFoundError(axiosError);
       } else if (axiosError.response?.status === StatusCodes.CONFLICT) {
-        if (
-          axiosError.response.data === "The user doesn't own that changeset"
-        ) {
+        if (axiosError.response.data === ownerMismatch) {
           throw new OwnerMismatchError(axiosError);
         }
         throw new ChangesetAlreadyClosedError(axiosError);
