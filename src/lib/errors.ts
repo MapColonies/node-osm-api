@@ -1,5 +1,7 @@
 import { AxiosError } from 'axios';
 
+export type ConflictErrorType = ChangesetAlreadyClosedError | MismatchChangesetError | ChangesetAlreadyClosedError | Error;
+
 class HttpErrorHandler extends Error {
   public constructor(error: AxiosError) {
     super(error.response?.data);

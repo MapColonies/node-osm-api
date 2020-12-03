@@ -10,8 +10,10 @@ import {
   ChangesetAlreadyClosedError,
   MismatchChangesetError,
   ChangesetOrDiffElementsNotFoundError,
+  ConflictErrorType,
 } from '../../lib/errors';
 import { OWNER_MISMATCH, CHANGESET_MISMATCH, CHANGESET_ALREADY_CLOSED } from '../../lib/constants';
+
 class Apiv6 {
   private readonly httpClient: AxiosInstance;
 
@@ -69,30 +71,48 @@ class Apiv6 {
     try {
       res = await this.httpClient.post<string>(uploadChangesetEndPoint(id), data);
     } catch (e) {
-      const axiosError = e as AxiosError;
+      const axiosError = e as AxiosError<string>;
+      let error;
 
-      if (axiosError.response?.status === StatusCodes.BAD_REQUEST) {
-        throw new BadXmlError(axiosError);
-      } else if (axiosError.response?.status === StatusCodes.NOT_FOUND) {
-        throw new ChangesetOrDiffElementsNotFoundError(axiosError);
-      } else if (axiosError.response?.status === StatusCodes.CONFLICT) {
-        if (axiosError.response?.data.includes(CHANGESET_ALREADY_CLOSED) === true) {
-          throw new ChangesetAlreadyClosedError(axiosError);
-        } else if (axiosError.response?.data.includes(OWNER_MISMATCH) === true) {
-          throw new OwnerMismatchError(axiosError);
-        } else if (axiosError.response?.data.includes(CHANGESET_MISMATCH) === true) {
-          throw new MismatchChangesetError(axiosError);
-        } else {
-          throw new Error(e);
+      switch (axiosError.response?.status) {
+        case StatusCodes.BAD_REQUEST: {
+          error = new BadXmlError(axiosError);
+          break;
         }
-      } else if (axiosError.response?.status === StatusCodes.UNAUTHORIZED) {
-        throw new UnauthorizedError(axiosError);
-      } else {
-        throw new Error(e);
+        case StatusCodes.NOT_FOUND: {
+          error = new ChangesetOrDiffElementsNotFoundError(axiosError);
+          break;
+        }
+        case StatusCodes.CONFLICT: {
+          const data = axiosError.response.data;
+          error = this.conflictErrorFactory(data, axiosError);
+          break;
+        }
+        case StatusCodes.UNAUTHORIZED: {
+          error = new UnauthorizedError(axiosError);
+          break;
+        }
+        default: {
+          error = new Error(e);
+          break;
+        }
       }
+      throw error;
     }
     const { data: diffResult } = res;
     return diffResult;
+  }
+
+  private conflictErrorFactory(data: string, axiosError: AxiosError): ConflictErrorType {
+    if (data.includes(CHANGESET_ALREADY_CLOSED)) {
+      return new ChangesetAlreadyClosedError(axiosError);
+    } else if (data.includes(OWNER_MISMATCH)) {
+      return new OwnerMismatchError(axiosError);
+    } else if (data.includes(CHANGESET_MISMATCH)) {
+      return new MismatchChangesetError(axiosError);
+    } else {
+      return new Error((axiosError as unknown) as string);
+    }
   }
 }
 
