@@ -1,12 +1,19 @@
 {
-  "name": "node-osm-api",
+  "name": "@map-colonies/node-osm-api",
   "version": "1.0.0",
   "description": "easy communication with osm api",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register 'tests/**/*.test.ts'",
-    "tsc": "tsc"
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
+    "release": "standard-version",
+    "build": "tsc"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MapColonies/node-osm-api.git"
@@ -21,8 +28,9 @@
       "@map-colonies/eslint-config/ts-base"
     ],
     "parserOptions": {
-      "project": "./tsconfig.json"
-    }
+      "project": "./tsbuildconfig.json"
+    },
+    "ignorePatterns": ["dist/**"]
   },
   "author": "galta95",
   "license": "ISC",
