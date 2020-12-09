@@ -3,7 +3,7 @@
 Easy Node.js, TypeScript communication with OpenStreetMap api
 
 ```ts
-import Apiv6 from '@map-colonies/node-osm-api';
+import { Apiv6 } from '@map-colonies/node-osm-api';
 
 const api = new Apiv6('https://www.openstreetmap.org', USER_NAME, PASSWORD);
 ```
@@ -31,6 +31,7 @@ async function createChangeset() {
   } catch (e) {
     console.error(e);
   }
+}
 ```
 
 Possibble error types:
@@ -52,6 +53,7 @@ async function uploadChangeset() {
   } catch (e) {
     console.error(e);
   }
+}
 ```
 
 Possibble error types:
@@ -74,6 +76,7 @@ async function closeChangeset() {
   } catch (e) {
     console.error(e);
   }
+}
 ```
 
 Possibble error types:
@@ -84,4 +87,18 @@ Possibble error types:
 - `ChangesetAlreadyClosedError`
 - `OwnerMismatchError`
 
----
+## JavaScript
+
+```js
+const nodeOsmApi = require('node-osm-api');
+
+const api = new nodeOsmApi.Apiv6('https://www.openstreetmap.org', USER_NAME, PASSWORD);
+
+async function createChangeset() {
+  try {
+    changesetID = await api.createChangeset(CREATE_CHANGESET_BODY_XML);
+  } catch (e) {
+    console.error(e);
+  }
+}
+```
