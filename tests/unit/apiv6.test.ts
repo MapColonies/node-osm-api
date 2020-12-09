@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import nock = require('nock');
 
-import Apiv6 from '../../src/index';
+import Apiv6 from '../../src/api/v6';
 import { createChangesetEndPoint, closeChangesetEndPoint, uploadChangesetEndPoint } from '../../src/lib/endpoints';
 import {
   UnauthorizedError,

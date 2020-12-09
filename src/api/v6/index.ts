@@ -14,7 +14,7 @@ import {
 } from '../../lib/errors';
 import { OWNER_MISMATCH, CHANGESET_MISMATCH, CHANGESET_ALREADY_CLOSED } from '../../lib/constants';
 
-class Apiv6 {
+export class Apiv6 {
   private readonly httpClient: AxiosInstance;
 
   public constructor(private readonly baseUrl: string, username: string, password: string) {

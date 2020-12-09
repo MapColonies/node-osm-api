@@ -1,3 +1,1 @@
-import Apiv6 from './api/v6';
-
-export default Apiv6;
+export * from './api/v6';
