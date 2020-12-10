@@ -37,6 +37,13 @@ jobs:
       - name: Bump new version
         run: npm run release
 
+      - name: Push git tag
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.MC_WRITE_ACCESS_TOKEN }}
+          branch: ${{ github.ref }}
+          tags: true
+
       - name: Push to NPM
         uses: JS-DevTools/npm-publish@v1
         with:
