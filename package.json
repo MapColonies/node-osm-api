@@ -30,9 +30,7 @@
     "parserOptions": {
       "project": "./tsbuildconfig.json"
     },
-    "ignorePatterns": [
-      "dist/**"
-    ]
+    "ignorePatterns": ["dist/**"]
   },
   "author": "galta95",
   "license": "ISC",
