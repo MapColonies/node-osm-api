@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/MapColonies/node-osm-api#readme",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "http-status-codes": "^2.1.4"
   },
   "devDependencies": {
