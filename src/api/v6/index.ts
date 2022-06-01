@@ -36,7 +36,7 @@ export class Apiv6 {
       } else if (axiosError.response?.status === StatusCodes.UNAUTHORIZED) {
         throw new UnauthorizedError(axiosError);
       } else {
-        throw new Error(e);
+        throw e;
       }
     }
     const { data: changeSetId } = res;
@@ -61,7 +61,7 @@ export class Apiv6 {
         }
         throw new ChangesetAlreadyClosedError(axiosError);
       } else {
-        throw new Error(e);
+        throw e;
       }
     }
   }
@@ -93,7 +93,7 @@ export class Apiv6 {
           break;
         }
         default: {
-          error = new Error(e);
+          error = e;
           break;
         }
       }
