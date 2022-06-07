@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register 'tests/**/*.test.ts'",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint \"src/**/*.ts\"",
+    "test": "mocha -r ts-node/register 'tests/**/*.spec.ts'",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.spec.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"tests/**/*.spec.ts\"",
     "release": "standard-version",
     "build": "tsc"
   },

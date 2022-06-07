@@ -111,7 +111,7 @@ export class Apiv6 {
     } else if (data.includes(CHANGESET_MISMATCH)) {
       return new MismatchChangesetError(axiosError);
     } else {
-      return new Error((axiosError as unknown) as string);
+      return new Error(axiosError as unknown as string);
     }
   }
 }
