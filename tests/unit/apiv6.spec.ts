@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import nock from 'nock';
+import * as nock from 'nock';
 import Apiv6 from '../../src/api/v6';
 import { createChangesetEndPoint, closeChangesetEndPoint, uploadChangesetEndPoint } from '../../src/lib/endpoints';
 import {
