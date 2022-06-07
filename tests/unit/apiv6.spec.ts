@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import nock = require('nock');
-
+import * as nock from 'nock';
 import Apiv6 from '../../src/api/v6';
 import { createChangesetEndPoint, closeChangesetEndPoint, uploadChangesetEndPoint } from '../../src/lib/endpoints';
 import {
@@ -13,6 +12,7 @@ import {
   ChangesetOrDiffElementsNotFoundError,
 } from '../../src/lib/errors';
 import { testConf } from './config/tests-config';
+
 const { baseUrl, username, password } = testConf;
 
 describe('apiv6', function () {

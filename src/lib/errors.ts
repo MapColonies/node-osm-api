@@ -1,10 +1,8 @@
 import { AxiosError } from 'axios';
 
-export type ConflictErrorType = ChangesetAlreadyClosedError | MismatchChangesetError | ChangesetAlreadyClosedError | Error;
-
 class HttpErrorHandler extends Error {
   public constructor(error: AxiosError) {
-    super(error.response?.data);
+    super(error.response?.data as string);
     Object.setPrototypeOf(this, HttpErrorHandler.prototype);
   }
 }
@@ -64,3 +62,5 @@ export class MismatchChangesetError extends HttpErrorHandler {
     Object.setPrototypeOf(this, MismatchChangesetError.prototype);
   }
 }
+
+export type ConflictErrorType = ChangesetAlreadyClosedError | MismatchChangesetError | ChangesetAlreadyClosedError | Error;
